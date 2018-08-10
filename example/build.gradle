@@ -3,18 +3,12 @@ buildscript {
   repositories {
       mavenLocal()
   }
-  dependencies {
-      classpath 'net.christophermerrill:update4j-gradle-plugin:0.1'
-//      classpath 'net.christophermerrill.gradle.plugin:net.christophermerrill.gradle.plugin.gradle.plugin:0.1'
-  }
 }
 
 plugins {
     id 'java'
     id 'application'
-//    id 'net.christophermerrill.gradle.plugin.gradle.plugin' version '0.1'
-//    id 'update4j-gradle-plugin' version '0.1'
-    id 'update4j-gradle' version '0.1'
+    id 'update4j-gradle-plugin' version '0.1'
 }
 
 repositories {

@@ -7,10 +7,10 @@ group 'net.christophermerrill'
 version '0.1'
 
 dependencies {
-//    implementation 'org.update4j:update4j:1.1.4-chris'
-//    implementation 'com.sun.xml.bind:jaxb-impl:2.3.0'
-//    implementation 'com.sun.xml.bind:jaxb-core:2.3.0'
-//    implementation 'com.sun.activation:javax.activation:1.2.0'
+    implementation 'org.update4j:update4j:1.1.4-chris'
+    implementation 'com.sun.xml.bind:jaxb-impl:2.3.0'
+    implementation 'com.sun.xml.bind:jaxb-core:2.3.0'
+    implementation 'com.sun.activation:javax.activation:1.2.0'
 }
 
 repositories {
@@ -22,7 +22,7 @@ repositories {
 gradlePlugin {
     plugins {
         update4j {
-            id = 'update4j-gradle'
+            id = 'update4j-gradle-plugin'
             implementationClass = 'net.christophermerrill.update4j.gradle.Update4jPlugin'
         }
     }
