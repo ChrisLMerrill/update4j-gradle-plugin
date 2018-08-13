@@ -12,5 +12,6 @@ public class Update4jPlugin implements Plugin<Project>
         {
         project.getExtensions().create("update4j", Update4jGradleExtension.class, project);
         project.getTasks().create("update4jConfig", CreateConfigTask.class);
+        project.getTasks().create("createUpdate4jConfig", GenerateConfigurationFileTask.class);
         }
     }
