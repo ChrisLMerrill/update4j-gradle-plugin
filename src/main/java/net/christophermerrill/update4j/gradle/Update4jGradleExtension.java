@@ -1,6 +1,5 @@
 package net.christophermerrill.update4j.gradle;
 
-import groovy.lang.*;
 import org.gradle.api.*;
 
 import java.io.*;
@@ -45,7 +44,6 @@ public class Update4jGradleExtension
 
     public void setOutput(String output_file)
         {
-System.out.println("output file is " + output_file);
         _output_file = output_file;
         }
 
@@ -61,7 +59,6 @@ System.out.println("output file is " + output_file);
 
     public void setArtifact(String descriptor)
         {
-System.out.println("adding artifact descriptor =" + descriptor);
         ArtifactSpec artifact = ArtifactSpec.parse(descriptor);
         _artifacts.add(artifact);
         }
@@ -88,7 +85,6 @@ System.out.println("adding artifact descriptor =" + descriptor);
 
     public void setArtifacts(String descriptor)
         {
-System.out.println("adding artifact folder descriptor =" + descriptor);
         ArtifactFolderSpec artifact = ArtifactFolderSpec.parse(descriptor);
         _artifact_folders.add(artifact);
         }
@@ -97,7 +93,6 @@ System.out.println("adding artifact folder descriptor =" + descriptor);
         {
         return _artifact_folders;
         }
-
 
     private Project _project;
 
