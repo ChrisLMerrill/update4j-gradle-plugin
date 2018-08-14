@@ -54,20 +54,6 @@ System.out.println("output file is " + output_file);
         return new File(_project.getBuildDir(), Objects.requireNonNullElse(_output_file, DEFAULT_OUTPUT_FILE));
         }
 
-/*
-    public void setFile(Object target)
-        {
-System.out.println(String.format("received a %s: %s  ", target.getClass().getSimpleName(), target));
-        }
-*/
-
-
-//    public void setUpdateFile(String file)
-//        {
-//System.out.println(String.format("Received file %s", file));
-//        }
-
-
     public String getArtifact()
         {
         return _artifacts.get(0).toString();
@@ -80,7 +66,7 @@ System.out.println("adding artifact descriptor =" + descriptor);
         _artifacts.add(artifact);
         }
 
-    public List<ArtifactSpec> getArtifacts()
+    public List<ArtifactSpec> getArtifactList()
         {
         return _artifacts;
         }
@@ -95,6 +81,24 @@ System.out.println("adding artifact descriptor =" + descriptor);
         _artifact_default_folder = artifact_base_path;
         }
 
+    public String getArtifacts()
+        {
+        return _artifact_folders.get(0).toString();
+        }
+
+    public void setArtifacts(String descriptor)
+        {
+System.out.println("adding artifact folder descriptor =" + descriptor);
+        ArtifactFolderSpec artifact = ArtifactFolderSpec.parse(descriptor);
+        _artifact_folders.add(artifact);
+        }
+
+    public List<ArtifactFolderSpec> getArtifactFolderList()
+        {
+        return _artifact_folders;
+        }
+
+
     private Project _project;
 
     // current
@@ -103,6 +107,7 @@ System.out.println("adding artifact descriptor =" + descriptor);
     private String _output_file = null;
     private String _artifact_default_folder = null;
     private List<ArtifactSpec> _artifacts = new ArrayList<>();
+    private List<ArtifactFolderSpec> _artifact_folders = new ArrayList<>();
 
     public final static String DEFAULT_OUTPUT_FILE = "update4j/config.xml";
 

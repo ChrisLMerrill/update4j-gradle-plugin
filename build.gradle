@@ -32,6 +32,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     testImplementation 'com.google.guava:guava:26.0-jre'
     testImplementation 'commons-io:commons-io:2.6'
+    testImplementation 'org.apache.commons:commons-lang3:3.7'
 }
 
 gradlePlugin {

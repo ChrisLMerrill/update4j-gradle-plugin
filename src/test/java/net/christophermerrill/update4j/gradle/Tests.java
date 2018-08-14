@@ -2,6 +2,7 @@ package net.christophermerrill.update4j.gradle;
 
 import com.google.common.io.*;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.*;
 import org.gradle.testkit.runner.*;
 import org.junit.*;
 
@@ -73,6 +74,28 @@ public class Tests
         Assert.assertTrue(runBuild());
         String xml = getOutputFile();
         Assert.assertTrue(xml.contains("path=\"override/file.jar\""));
+        }
+
+    @Test
+    public void allFilesInFolder() throws IOException
+        {
+        addAllArtifactsInFolder();
+        createGradleFile(false, false, true);
+        Assert.assertTrue(runBuild());
+        String xml = getOutputFile();
+        Assert.assertEquals(6, StringUtils.countMatches(xml, "<library path=\"install/MyApp/lib"));  // find the right number?
+        Assert.assertTrue(xml.contains("path=\"install/MyApp/lib/MyApp.jar")); // verify one
+        }
+
+    @Test
+    public void allFilesInFolderWithPathOverride() throws IOException
+        {
+        addAllArtifactsInFolderWithPathOverride();
+        createGradleFile(false, false, true);
+        Assert.assertTrue(runBuild());
+        String xml = getOutputFile();
+        Assert.assertEquals(6, StringUtils.countMatches(xml, "<library path=\"lib"));  // find the right number?
+        Assert.assertTrue(xml.contains("path=\"lib/MyApp.jar")); // verify one
         }
 
     private boolean runBuild()
@@ -149,6 +172,18 @@ public class Tests
             "    artifactDefaultFolder 'install/MyApp/'\n" +
             "    artifact 'file=install/MyApp/lib/MyApp.jar'\n" +   // this one will resolve under the build path
             "    artifact 'file=lib/guava-23.0.jar'\n";             // this one will resolve under the specified base path
+        }
+
+    private void addAllArtifactsInFolder()
+        {
+        _artifacts =
+            "    artifacts 'folder=install/MyApp/lib'\n";
+        }
+
+    private void addAllArtifactsInFolderWithPathOverride()
+        {
+        _artifacts =
+            "    artifacts 'folder=install/MyApp/lib:base=install/MyApp'\n";
         }
 
     private String getOutputFile() throws IOException
