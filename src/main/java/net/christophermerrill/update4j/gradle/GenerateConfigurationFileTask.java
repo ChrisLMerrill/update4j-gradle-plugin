@@ -26,9 +26,8 @@ public class GenerateConfigurationFileTask extends DefaultTask
         if (path == null)
             throw new IllegalStateException("The 'path' property must be provided in a 'update4j' block. This property must specify the base path of the files to update (in the installation).");
 
-
         Configuration.Builder builder = Configuration
-            .withBase(URI.create(extension.getUri()), Paths.get(extension.getPath()));
+            .withBase(URI.create(extension.getUri()), computePath(extension));
 
         builder = addArtifacts(extension, builder);
         builder = addArtifactFolders(extension, builder);
@@ -44,6 +43,14 @@ public class GenerateConfigurationFileTask extends DefaultTask
         outstream.close();
         }
 
+    private Path computePath(Update4jGradleExtension extension)
+        {
+        String path = extension.getPath();
+        path = path.replace("${user.dir}", System.getProperty("user.dir"));
+        path = path.replace("${user.home}", System.getProperty("user.home"));
+        return Paths.get(path);
+        }
+
     private Configuration.Builder addArtifacts(Update4jGradleExtension extension, Configuration.Builder builder)
         {
         File build_dir = getProject().getBuildDir();
@@ -53,7 +60,9 @@ public class GenerateConfigurationFileTask extends DefaultTask
         Path base_path = base_dir.toPath().normalize();
         for (ArtifactSpec spec : extension.getArtifactList())
             {
-            File artifact_file = new File(build_dir, spec.getFile());
+            File artifact_file = new File(spec.getFile());
+            if (!artifact_file.isAbsolute())
+                artifact_file = new File(build_dir, spec.getFile());
             if (!artifact_file.exists() && new File(base_dir, spec.getFile()).exists())
                 artifact_file = new File(base_dir, spec.getFile());
             if (!artifact_file.exists())
@@ -88,7 +97,7 @@ public class GenerateConfigurationFileTask extends DefaultTask
             Path folder_base_path = base_path;
             if (spec.getBase() != null)
                 folder_base_path = new File(build_dir, spec.getBase()).toPath().normalize();
-debug(String.format("folder_base_path=%s\n", folder_base_path));
+            //debug(String.format("folder_base_path=%s\n", folder_base_path));
 
             for (File artifact_file : files)
                 {
@@ -96,7 +105,9 @@ debug(String.format("folder_base_path=%s\n", folder_base_path));
                     continue;
                 Path artifact_path = artifact_file.toPath().normalize();
                 Path relative_path = folder_base_path.relativize(artifact_path);
-debug(String.format("relative_path=%s\n", relative_path));
+                if (spec.getPath() != null)
+                    relative_path = Paths.get(spec.getPath() + artifact_file.getName());
+                //debug(String.format("relative_path=%s\n", relative_path));
                 builder = builder.library(Library.Reference.at(artifact_file.getAbsolutePath()).path(relative_path).build());
                 }
             }

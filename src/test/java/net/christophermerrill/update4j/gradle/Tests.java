@@ -56,6 +56,16 @@ public class Tests
         }
 
     @Test
+    public void fileArtifactAbsolute() throws IOException
+        {
+        addAbsoluteFileArtifact();
+        createGradleFile(false, false, true);
+        Assert.assertTrue(runBuild());
+        String xml = getOutputFile();
+        Assert.assertTrue(xml.contains("path=\"absolute/MyApp.jar\""));
+        }
+
+    @Test
     public void fileArtifactsRelative() throws IOException
         {
         addFileArtifactsWithDefaultBasePath();
@@ -88,14 +98,49 @@ public class Tests
         }
 
     @Test
-    public void allFilesInFolderWithPathOverride() throws IOException
+    public void allFilesInFolderWithBaseOverride() throws IOException
         {
-        addAllArtifactsInFolderWithPathOverride();
+        addAllArtifactsInFolderWithBaseOverride();
         createGradleFile(false, false, true);
         Assert.assertTrue(runBuild());
         String xml = getOutputFile();
         Assert.assertEquals(6, StringUtils.countMatches(xml, "<library path=\"lib"));  // find the right number?
         Assert.assertTrue(xml.contains("path=\"lib/MyApp.jar")); // verify one
+        }
+
+    @Test
+    public void allFilesInFolderWithBaseOverrideAndPath() throws IOException
+        {
+        addAllArtifactsInFolderWithBaseOverrideAndPath();
+        createGradleFile(false, false, true);
+        Assert.assertTrue(runBuild());
+        String xml = getOutputFile();
+        Assert.assertEquals(6, StringUtils.countMatches(xml, "<library path=\"mypath/"));  // find the right number?
+        Assert.assertTrue(xml.contains("path=\"mypath/MyApp.jar")); // verify one
+        }
+
+    @Test
+    public void userDirPath() throws IOException
+        {
+        _path = "'${user.dir}'";
+        addBasicFileArtifacts();
+        createGradleFile(false, false, true);
+        Assert.assertTrue(runBuild());
+        String xml = getOutputFile();
+        Assert.assertTrue(xml.contains("path=\"install/MyApp/lib/MyApp.jar\""));
+        Assert.assertTrue(xml.contains("path=\"${user.dir}\""));
+        }
+
+    @Test
+    public void userHomePath() throws IOException
+        {
+        _path = "'${user.home}'";
+        addBasicFileArtifacts();
+        createGradleFile(false, false, true);
+        Assert.assertTrue(runBuild());
+        String xml = getOutputFile();
+        Assert.assertTrue(xml.contains("path=\"install/MyApp/lib/MyApp.jar\""));
+        Assert.assertTrue(xml.contains("path=\"${user.home}\""));
         }
 
     private boolean runBuild()
@@ -139,7 +184,12 @@ public class Tests
         if (!skip_uri)
             printer.println("    uri 'http://hostname.dom/update_path'");
         if (!skip_path)
-            printer.println("    path System.properties['user.home']");
+            {
+            String path = "System.properties['user.home']";
+            if (_path != null)
+                path = _path;
+            printer.println("    path " + path);
+            }
         if (!skip_output)
             printer.println("    output 'path/to/output.xml'");
 
@@ -160,10 +210,16 @@ public class Tests
             "    artifact 'file=install/MyApp/lib/guava-23.0.jar'\n";
         }
 
+    private void addAbsoluteFileArtifact()
+        {
+        _artifacts =
+            "    artifact 'file=" + new File(_project,"build/libs/MyApp.jar").getAbsolutePath().replace("\\", "\\\\") + "|path=absolute/MyApp.jar'\n";
+        }
+
     private void addFileArtifactWithPathOverride()
         {
         _artifacts =
-            "    artifact 'file=install/MyApp/lib/guava-23.0.jar:path=override/file.jar'\n";
+            "    artifact 'file=install/MyApp/lib/guava-23.0.jar|path=override/file.jar'\n";
         }
 
     private void addFileArtifactsWithDefaultBasePath()
@@ -180,10 +236,16 @@ public class Tests
             "    artifacts 'folder=install/MyApp/lib'\n";
         }
 
-    private void addAllArtifactsInFolderWithPathOverride()
+    private void addAllArtifactsInFolderWithBaseOverride()
         {
         _artifacts =
-            "    artifacts 'folder=install/MyApp/lib:base=install/MyApp'\n";
+            "    artifacts 'folder=install/MyApp/lib|base=install/MyApp'\n";
+        }
+
+    private void addAllArtifactsInFolderWithBaseOverrideAndPath()
+        {
+        _artifacts =
+            "    artifacts 'folder=install/MyApp/lib|base=install/MyApp/lib|path=mypath/'\n";
         }
 
     private String getOutputFile() throws IOException
@@ -207,6 +269,6 @@ public class Tests
     private File _project;
     private String _artifacts = null;
     private BuildResult _result;
+
+    private String _path = null;
     }
-
-
