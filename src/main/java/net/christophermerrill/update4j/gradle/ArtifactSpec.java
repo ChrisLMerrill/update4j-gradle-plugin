@@ -31,7 +31,7 @@ public class ArtifactSpec
         {
         ArtifactSpec artifact = new ArtifactSpec();
 
-        StringTokenizer tokenizer = new StringTokenizer(descriptor, ":");
+        StringTokenizer tokenizer = new StringTokenizer(descriptor, "|");
         while (tokenizer.hasMoreTokens())
             {
             StringTokenizer params = new StringTokenizer(tokenizer.nextToken(), "=");
@@ -51,5 +51,3 @@ public class ArtifactSpec
     private String _file;
     private String _path;
     }
-
-

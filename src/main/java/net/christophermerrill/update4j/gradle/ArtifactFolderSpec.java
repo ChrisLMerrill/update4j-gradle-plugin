@@ -27,11 +27,21 @@ public class ArtifactFolderSpec
         _base = base;
         }
 
+    public String getPath()
+        {
+        return _path;
+        }
+
+    public void setPath(String path)
+        {
+        _path = path;
+        }
+
     public static ArtifactFolderSpec parse(String descriptor)
         {
         ArtifactFolderSpec artifact = new ArtifactFolderSpec();
 
-        StringTokenizer tokenizer = new StringTokenizer(descriptor, ":");
+        StringTokenizer tokenizer = new StringTokenizer(descriptor, "|");
         while (tokenizer.hasMoreTokens())
             {
             StringTokenizer params = new StringTokenizer(tokenizer.nextToken(), "=");
@@ -43,6 +53,9 @@ public class ArtifactFolderSpec
                 case "base":
                     artifact._base = params.nextToken();
                     break;
+                case "path":
+                    artifact._path = params.nextToken();
+                    break;
                 }
             }
         return artifact;
@@ -50,6 +63,7 @@ public class ArtifactFolderSpec
 
     private String _folder;
     private String _base;
+    private String _path;
     }
 
 
