@@ -12,19 +12,19 @@ public class ArtifactSpec
         return _file;
         }
 
-    public void setFile(String file)
-        {
-        _file = file;
-        }
-
     public String getPath()
         {
         return _path;
         }
 
-    public void setPath(String path)
+    public boolean isClasspath()
         {
-        _path = path;
+        return _classpath;
+        }
+
+    public boolean isModulepath()
+        {
+        return _modulepath;
         }
 
     public static ArtifactSpec parse(String descriptor)
@@ -43,6 +43,12 @@ public class ArtifactSpec
                 case "path":
                     artifact._path = params.nextToken();
                     break;
+                case "classpath":
+                    artifact._classpath = true;
+                    break;
+                case "modulepath":
+                    artifact._modulepath = true;
+                    break;
                 }
             }
         return artifact;
@@ -50,4 +56,6 @@ public class ArtifactSpec
 
     private String _file;
     private String _path;
+    private boolean _classpath = false;
+    private boolean _modulepath = false;
     }

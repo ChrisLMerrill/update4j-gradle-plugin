@@ -53,12 +53,33 @@ public class Tests
         String xml = getOutputFile();
         Assert.assertTrue(xml.contains("path=\"install/MyApp/lib/MyApp.jar\""));
         Assert.assertTrue(xml.contains("path=\"install/MyApp/lib/guava-23.0.jar\""));
+        Assert.assertFalse(xml.contains("classpath"));
+        }
+
+    @Test
+    public void fileArtifactWithClasspath() throws IOException
+        {
+        _artifacts = "    artifact 'file=install/MyApp/lib/MyApp.jar|path=override/file.jar|classpath'\n";
+        createGradleFile(false, false, true);
+        Assert.assertTrue(runBuild());
+        String xml = getOutputFile();
+        Assert.assertTrue(xml.contains("classpath"));
+        }
+
+    @Test
+    public void fileArtifactWithModulepath() throws IOException
+        {
+        _artifacts = "    artifact 'file=install/MyApp/lib/MyApp.jar|path=override/file.jar|modulepath'\n";
+        createGradleFile(false, false, true);
+        Assert.assertTrue(runBuild());
+        String xml = getOutputFile();
+        Assert.assertTrue(xml.contains("modulepath"));
         }
 
     @Test
     public void fileArtifactAbsolute() throws IOException
         {
-        addAbsoluteFileArtifact();
+        _artifacts = "    artifact 'file=" + new File(_project,"build/libs/MyApp.jar").getAbsolutePath().replace("\\", "\\\\") + "|path=absolute/MyApp.jar'\n";
         createGradleFile(false, false, true);
         Assert.assertTrue(runBuild());
         String xml = getOutputFile();
@@ -208,12 +229,6 @@ public class Tests
         _artifacts =
             "    artifact 'file=install/MyApp/lib/MyApp.jar'\n" +
             "    artifact 'file=install/MyApp/lib/guava-23.0.jar'\n";
-        }
-
-    private void addAbsoluteFileArtifact()
-        {
-        _artifacts =
-            "    artifact 'file=" + new File(_project,"build/libs/MyApp.jar").getAbsolutePath().replace("\\", "\\\\") + "|path=absolute/MyApp.jar'\n";
         }
 
     private void addFileArtifactWithPathOverride()

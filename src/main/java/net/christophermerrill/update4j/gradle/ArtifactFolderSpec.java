@@ -12,19 +12,9 @@ public class ArtifactFolderSpec
         return _folder;
         }
 
-    public void setFolder(String folder)
-        {
-        _folder = folder;
-        }
-
     public String getBase()
         {
         return _base;
-        }
-
-    public void setBase(String base)
-        {
-        _base = base;
         }
 
     public String getPath()
@@ -32,9 +22,14 @@ public class ArtifactFolderSpec
         return _path;
         }
 
-    public void setPath(String path)
+    public boolean isClasspath()
         {
-        _path = path;
+        return _classpath;
+        }
+
+    public boolean isModulepath()
+        {
+        return _modulepath;
         }
 
     public static ArtifactFolderSpec parse(String descriptor)
@@ -56,6 +51,12 @@ public class ArtifactFolderSpec
                 case "path":
                     artifact._path = params.nextToken();
                     break;
+                case "classpath":
+                    artifact._classpath = true;
+                    break;
+                case "modulepath":
+                    artifact._modulepath = true;
+                    break;
                 }
             }
         return artifact;
@@ -64,6 +65,8 @@ public class ArtifactFolderSpec
     private String _folder;
     private String _base;
     private String _path;
+    private boolean _classpath = false;
+    private boolean _modulepath = false;
     }
 
 
