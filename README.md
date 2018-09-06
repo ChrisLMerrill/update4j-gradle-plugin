@@ -8,8 +8,8 @@ Add an 'update4j' block to build.gradle, as shown below.
 * 'uri' is the location of the update files (i.e. the update server) - exactly the same as the uri parameter
 * 'path' is the location of the application installation (i.e. on the user's machine)
 * 'output' is where the config file will the written (relative to the Gradle build path)
-* each 'artifact' specifies a file to be included in the update
-* each 'artifacts' specifies a folder to be included in the update (subfolders are not included)
+* each 'file' specifies a file to be included in the update
+* each 'folder' specifies a folder to be included in the update (subfolders are not included)
 
 ```
 update4j {
@@ -23,9 +23,37 @@ update4j {
 
 ### file
 
+Specify a file to be included in the configuration.
+
+The file property (which may appear multiple times) should provide a list of parameters, separated by '|' character. Parameters are:
+
+* name - the value provides path & name of the file relative to the Gradle build folder
+* path - the value provides the path & name of the file where it will be installed/updated on the deployment target
+* classpath - include this file on the classpath
+* modulepath - include this file on the modulepath
+* ignorebootconflict - ignore boot path conflicts for this file
 
 ### folder
 
+Specify a folder to be included in the configuration. All files in the folder will be added to the configuration. Subfolders are not included.
+
+The folder property (which may appear multiple times) should provide a list of parameters, separated by '|' character. Parameters are:
+
+* name - the value provides path/name of the folder relative to the Gradle build folder
+* path - the value provides the path of the folder where the files will be installed/updated on the deployment target
+* classpath - include these files on the classpath
+* modulepath - include these files on the modulepath
+* ignorebootconflict - ignore boot path conflicts for these files
+
+### Command
+
+```
+gradle createUpdate4jConfig
+```
+
+## Example
+
+The example folder contains a fully-working, though minimal, example. 
 
 ## Installation
 
