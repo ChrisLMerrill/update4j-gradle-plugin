@@ -14,7 +14,7 @@ Next, use the plugin in your project like by adding this to your *build.gradle*
 
 ```
 plugins {
-    id 'update4j-gradle-plugin' version '0.1'
+    id 'update4j-gradle-plugin' version '0.2'
 }
 ```
 
