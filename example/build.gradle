@@ -1,7 +1,7 @@
 plugins {
     id 'java'
     id 'application'
-    id 'update4j-gradle-plugin' version '0.1'
+    id 'update4j-gradle-plugin' version '0.2'
 }
 
 repositories {
@@ -12,6 +12,11 @@ version = '1.0'
 mainClassName = 'example.Hello'
 
 update4j {
-    uri = 'https://myserver.com/path-to-my-update-files/' // required
+    uri = 'https://myserver.com/path-to-my-update-files/'
+    path = '${user.dir}'
+    output = 'update4j/update.xml'
+//    folder = 'name=install/example|path=/'
+    file = 'name=install/example/lib/example-1.0.jar|path=/lib/example-1.0.jar|classpath'
+    folder = 'name=install/example/bin|path=/bin/'
 }
 

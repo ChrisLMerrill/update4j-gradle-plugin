@@ -59,7 +59,7 @@ public class Tests
     @Test
     public void fileArtifactWithClasspath() throws IOException
         {
-        _artifacts = "    artifact 'file=install/MyApp/lib/MyApp.jar|path=override/file.jar|classpath'\n";
+        _files = "    file 'name=install/MyApp/lib/MyApp.jar|path=override/file.jar|classpath'\n";
         createGradleFile(false, false, true);
         Assert.assertTrue(runBuild());
         String xml = getOutputFile();
@@ -69,7 +69,7 @@ public class Tests
     @Test
     public void fileArtifactWithModulepath() throws IOException
         {
-        _artifacts = "    artifact 'file=install/MyApp/lib/MyApp.jar|path=override/file.jar|modulepath'\n";
+        _files = "    file 'name=install/MyApp/lib/MyApp.jar|path=override/file.jar|modulepath'\n";
         createGradleFile(false, false, true);
         Assert.assertTrue(runBuild());
         String xml = getOutputFile();
@@ -79,7 +79,7 @@ public class Tests
     @Test
     public void fileArtifactAbsolute() throws IOException
         {
-        _artifacts = "    artifact 'file=" + new File(_project,"build/libs/MyApp.jar").getAbsolutePath().replace("\\", "\\\\") + "|path=absolute/MyApp.jar'\n";
+        _files = "    file 'name=" + new File(_project,"build/libs/MyApp.jar").getAbsolutePath().replace("\\", "\\\\") + "|path=absolute/MyApp.jar'\n";
         createGradleFile(false, false, true);
         Assert.assertTrue(runBuild());
         String xml = getOutputFile();
@@ -178,15 +178,18 @@ public class Tests
         catch (Throwable e)
             {
             e.printStackTrace();
+            System.out.println("build.gradle:");
+            System.out.println("---------------------");
+            System.out.println(_build_gradle);
+            System.out.println("---------------------");
             return false;
             }
         }
 
     private void createGradleFile(boolean skip_uri, boolean skip_path, boolean skip_output) throws IOException
         {
-        File build = new File(_project, "build.gradle");
-        FileOutputStream outstream = new FileOutputStream(build);
-        PrintStream printer = new PrintStream(outstream);
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        PrintStream printer = new PrintStream(bytes);
         printer.println("plugins {");
         printer.println("    id 'application'");
         printer.println("    id 'update4j-gradle-plugin'");
@@ -213,53 +216,61 @@ public class Tests
         if (!skip_output)
             printer.println("    output 'path/to/output.xml'");
 
-        if (_artifacts != null)
-            printer.println(_artifacts);
+        if (_files != null)
+            printer.println(_files);
 
         printer.println("}");
         printer.println("mainClassName = 'mypackage.App'");
         printer.flush();
         printer.close();
+
+        // save for diagnostics
+        _build_gradle = bytes.toString(StandardCharsets.UTF_8);
+
+        // write to file
+        File build = new File(_project, "build.gradle");
+        FileOutputStream outstream = new FileOutputStream(build);
+        outstream.write(bytes.toByteArray());
         outstream.close();
         }
 
     private void addBasicFileArtifacts()
         {
-        _artifacts =
-            "    artifact 'file=install/MyApp/lib/MyApp.jar'\n" +
-            "    artifact 'file=install/MyApp/lib/guava-23.0.jar'\n";
+        _files =
+            "    file 'name=install/MyApp/lib/MyApp.jar'\n" +
+            "    file 'name=install/MyApp/lib/guava-23.0.jar'\n";
         }
 
     private void addFileArtifactWithPathOverride()
         {
-        _artifacts =
-            "    artifact 'file=install/MyApp/lib/guava-23.0.jar|path=override/file.jar'\n";
+        _files =
+            "    file 'name=install/MyApp/lib/guava-23.0.jar|path=override/file.jar'\n";
         }
 
     private void addFileArtifactsWithDefaultBasePath()
         {
-        _artifacts =
-            "    artifactDefaultFolder 'install/MyApp/'\n" +
-            "    artifact 'file=install/MyApp/lib/MyApp.jar'\n" +   // this one will resolve under the build path
-            "    artifact 'file=lib/guava-23.0.jar'\n";             // this one will resolve under the specified base path
+        _files =
+            "    defaultFolder 'install/MyApp/'\n" +
+            "    file 'name=install/MyApp/lib/MyApp.jar'\n" +   // this one will resolve under the build path
+            "    file 'name=lib/guava-23.0.jar'\n";             // this one will resolve under the specified base path
         }
 
     private void addAllArtifactsInFolder()
         {
-        _artifacts =
-            "    artifacts 'folder=install/MyApp/lib'\n";
+        _files =
+            "    folder 'name=install/MyApp/lib'\n";
         }
 
     private void addAllArtifactsInFolderWithBaseOverride()
         {
-        _artifacts =
-            "    artifacts 'folder=install/MyApp/lib|base=install/MyApp'\n";
+        _files =
+            "    folder 'name=install/MyApp/lib|base=install/MyApp'\n";
         }
 
     private void addAllArtifactsInFolderWithBaseOverrideAndPath()
         {
-        _artifacts =
-            "    artifacts 'folder=install/MyApp/lib|base=install/MyApp/lib|path=mypath/'\n";
+        _files =
+            "    folder 'name=install/MyApp/lib|base=install/MyApp/lib|path=mypath/'\n";
         }
 
     private String getOutputFile() throws IOException
@@ -281,7 +292,8 @@ public class Tests
         }
 
     private File _project;
-    private String _artifacts = null;
+    private String _build_gradle;
 
+    private String _files = null;
     private String _path = null;
     }

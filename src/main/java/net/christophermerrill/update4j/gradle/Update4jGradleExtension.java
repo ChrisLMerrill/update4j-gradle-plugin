@@ -52,46 +52,46 @@ public class Update4jGradleExtension
         return new File(_project.getBuildDir(), Objects.requireNonNullElse(_output_file, DEFAULT_OUTPUT_FILE));
         }
 
-    public String getArtifact()
+    public String getFile()
         {
-        return _artifacts.get(0).toString();
+        return _files.get(0).toString();
         }
 
-    public void setArtifact(String descriptor)
+    public void setFile(String descriptor)
         {
-        ArtifactSpec artifact = ArtifactSpec.parse(descriptor);
-        _artifacts.add(artifact);
+        FileSpec artifact = FileSpec.parse(descriptor);
+        _files.add(artifact);
         }
 
-    public List<ArtifactSpec> getArtifactList()
+    public List<FileSpec> getArtifactList()
         {
-        return _artifacts;
+        return _files;
         }
 
     public String getArtifactDefaultFolder()
         {
-        return _artifact_default_folder;
+        return _file_default_folder;
         }
 
-    public void setArtifactDefaultFolder(String artifact_base_path)
+    public void setDefaultFolder(String base_path)
         {
-        _artifact_default_folder = artifact_base_path;
+        _file_default_folder = base_path;
         }
 
-    public String getArtifacts()
+    public String getFolder()
         {
-        return _artifact_folders.get(0).toString();
+        return _folders.get(0).toString();
         }
 
-    public void setArtifacts(String descriptor)
+    public void setFolder(String descriptor)
         {
-        ArtifactFolderSpec artifact = ArtifactFolderSpec.parse(descriptor);
-        _artifact_folders.add(artifact);
+        FolderSpec folder = FolderSpec.parse(descriptor);
+        _folders.add(folder);
         }
 
-    public List<ArtifactFolderSpec> getArtifactFolderList()
+    public List<FolderSpec> getArtifactFolderList()
         {
-        return _artifact_folders;
+        return _folders;
         }
 
     private Project _project;
@@ -100,9 +100,9 @@ public class Update4jGradleExtension
     private String _uri = null;
     private String _path = null;
     private String _output_file = null;
-    private String _artifact_default_folder = null;
-    private List<ArtifactSpec> _artifacts = new ArrayList<>();
-    private List<ArtifactFolderSpec> _artifact_folders = new ArrayList<>();
+    private String _file_default_folder = null;
+    private List<FileSpec> _files = new ArrayList<>();
+    private List<FolderSpec> _folders = new ArrayList<>();
 
     public final static String DEFAULT_OUTPUT_FILE = "update4j/config.xml";
 

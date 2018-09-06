@@ -5,16 +5,11 @@ import java.util.*;
 /**
  * @author Christopher L Merrill (see LICENSE.txt for license details)
  */
-public class ArtifactFolderSpec
+public class FileSpec
     {
-    public String getFolder()
+    public String getName()
         {
-        return _folder;
-        }
-
-    public String getBase()
-        {
-        return _base;
+        return _name;
         }
 
     public String getPath()
@@ -32,9 +27,9 @@ public class ArtifactFolderSpec
         return _modulepath;
         }
 
-    public static ArtifactFolderSpec parse(String descriptor)
+    public static FileSpec parse(String descriptor)
         {
-        ArtifactFolderSpec artifact = new ArtifactFolderSpec();
+        FileSpec artifact = new FileSpec();
 
         StringTokenizer tokenizer = new StringTokenizer(descriptor, "|");
         while (tokenizer.hasMoreTokens())
@@ -42,11 +37,8 @@ public class ArtifactFolderSpec
             StringTokenizer params = new StringTokenizer(tokenizer.nextToken(), "=");
             switch (params.nextToken())
                 {
-                case "folder":
-                    artifact._folder = params.nextToken();
-                    break;
-                case "base":
-                    artifact._base = params.nextToken();
+                case "name":
+                    artifact._name = params.nextToken();
                     break;
                 case "path":
                     artifact._path = params.nextToken();
@@ -62,11 +54,8 @@ public class ArtifactFolderSpec
         return artifact;
         }
 
-    private String _folder;
-    private String _base;
+    private String _name;
     private String _path;
     private boolean _classpath = false;
     private boolean _modulepath = false;
     }
-
-

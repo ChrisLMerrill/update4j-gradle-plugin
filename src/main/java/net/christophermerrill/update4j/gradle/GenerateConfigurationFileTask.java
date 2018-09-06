@@ -28,8 +28,8 @@ public class GenerateConfigurationFileTask extends DefaultTask
 
         Configuration.Builder builder = Configuration.builder().baseUri(URI.create(extension.getUri())).basePath(computePath(extension));
 
-        builder = addArtifacts(extension, builder);
-        builder = addArtifactFolders(extension, builder);
+        builder = addFiles(extension, builder);
+        builder = addFolders(extension, builder);
 
         Configuration config = builder.build();
 
@@ -52,41 +52,41 @@ public class GenerateConfigurationFileTask extends DefaultTask
         return Paths.get(path);
         }
 
-    private Configuration.Builder addArtifacts(Update4jGradleExtension extension, Configuration.Builder builder)
+    private Configuration.Builder addFiles(Update4jGradleExtension extension, Configuration.Builder builder)
         {
         File build_dir = getProject().getBuildDir();
         File base_dir = build_dir;
         if (extension.getArtifactDefaultFolder() != null)
             base_dir = new File(getProject().getBuildDir(), extension.getArtifactDefaultFolder());
         Path base_path = base_dir.toPath().normalize();
-        for (ArtifactSpec spec : extension.getArtifactList())
+        for (FileSpec spec : extension.getArtifactList())
             {
-            File artifact_file = new File(spec.getFile());
-            if (!artifact_file.isAbsolute())
-                artifact_file = new File(build_dir, spec.getFile());
-            if (!artifact_file.exists() && new File(base_dir, spec.getFile()).exists())
-                artifact_file = new File(base_dir, spec.getFile());
-            if (!artifact_file.exists())
-                throw new IllegalArgumentException("The specified artifact file does not exist: " + artifact_file.getAbsolutePath());
-            Path artifact_path = artifact_file.toPath();
+            File file = new File(spec.getName());
+            if (!file.isAbsolute())
+                file = new File(build_dir, spec.getName());
+            if (!file.exists() && new File(base_dir, spec.getName()).exists())
+                file = new File(base_dir, spec.getName());
+            if (!file.exists())
+                throw new IllegalArgumentException("The specified artifact file does not exist: " + file.getAbsolutePath());
+            Path artifact_path = file.toPath();
             Path relative_path = base_path.relativize(artifact_path);
             if (spec.getPath() != null)
                 relative_path = Paths.get(spec.getPath());
-            builder = builder.file(FileMetadata.readFrom(artifact_file.getAbsolutePath()).path(relative_path).classpath(spec.isClasspath()).modulepath(spec.isModulepath()));
+            builder = builder.file(FileMetadata.readFrom(file.getAbsolutePath()).path(relative_path).classpath(spec.isClasspath()).modulepath(spec.isModulepath()));
             }
         return builder;
         }
 
-    private Configuration.Builder addArtifactFolders(Update4jGradleExtension extension, Configuration.Builder builder)
+    private Configuration.Builder addFolders(Update4jGradleExtension extension, Configuration.Builder builder)
         {
         File build_dir = getProject().getBuildDir();
         File base_dir = build_dir;
         if (extension.getArtifactDefaultFolder() != null)
             base_dir = new File(getProject().getBuildDir(), extension.getArtifactDefaultFolder());
         Path base_path = base_dir.toPath().normalize();
-        for (ArtifactFolderSpec spec : extension.getArtifactFolderList())
+        for (FolderSpec spec : extension.getArtifactFolderList())
             {
-            File folder = new File(build_dir, spec.getFolder());
+            File folder = new File(build_dir, spec.getName());
             if (!folder.exists())
                 throw new IllegalArgumentException("The specified artifact folder does not exist: " + folder.getAbsolutePath());
             if (!folder.isDirectory())
@@ -115,6 +115,9 @@ public class GenerateConfigurationFileTask extends DefaultTask
         return builder;
         }
 
+    /**
+     * Useful for getting debug messages from the task.
+     */
     private void debug(String message)
         {
         _extra_info.append(message);
