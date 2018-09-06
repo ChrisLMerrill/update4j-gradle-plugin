@@ -25,9 +25,6 @@ repositories {
 
 dependencies {
     implementation 'org.update4j:update4j:1.2.2'
-    implementation 'com.sun.xml.bind:jaxb-impl:2.3.0'
-    implementation 'com.sun.xml.bind:jaxb-core:2.3.0'
-    implementation 'com.sun.activation:javax.activation:1.2.0'
 
     testImplementation 'junit:junit:4.12'
     testImplementation 'com.google.guava:guava:26.0-jre'
