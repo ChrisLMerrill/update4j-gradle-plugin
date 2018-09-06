@@ -67,7 +67,9 @@ public class GenerateConfigurationFileTask extends DefaultTask
             if (!file.exists() && new File(base_dir, spec.getName()).exists())
                 file = new File(base_dir, spec.getName());
             if (!file.exists())
-                throw new IllegalArgumentException("The specified artifact file does not exist: " + file.getAbsolutePath());
+                throw new IllegalArgumentException("The specified file does not exist: " + file.getAbsolutePath());
+            if (file.isDirectory())
+                throw new IllegalArgumentException("The specified file is a folder: " + file.getAbsolutePath());
             Path artifact_path = file.toPath();
             Path relative_path = base_path.relativize(artifact_path);
             if (spec.getPath() != null)
