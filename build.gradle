@@ -3,7 +3,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'org.unbroken-dome.gradle-plugins:gradle-testsets-plugin:1.4.5'
+        classpath 'org.unbroken-dome.gradle-plugins:gradle-testsets-plugin:1.5.1'
     }
 }
 
@@ -15,7 +15,7 @@ plugins {
 }
 
 group 'net.christophermerrill'
-version '0.1'
+version '0.2'
 
 repositories {
     mavenLocal()
@@ -24,7 +24,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.update4j:update4j:1.1.4-chris'
+    implementation 'org.update4j:update4j:1.2.2'
     implementation 'com.sun.xml.bind:jaxb-impl:2.3.0'
     implementation 'com.sun.xml.bind:jaxb-core:2.3.0'
     implementation 'com.sun.activation:javax.activation:1.2.0'
@@ -47,6 +47,12 @@ gradlePlugin {
 publishing {
     repositories {
         mavenLocal()
+    }
+    publications {
+        mavenJava(MavenPublication) {
+            artifact sourcesJar
+            artifact javadocJar
+        }
     }
 }
 

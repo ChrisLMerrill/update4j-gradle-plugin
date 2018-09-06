@@ -26,8 +26,7 @@ public class GenerateConfigurationFileTask extends DefaultTask
         if (path == null)
             throw new IllegalStateException("The 'path' property must be provided in a 'update4j' block. This property must specify the base path of the files to update (in the installation).");
 
-        Configuration.Builder builder = Configuration
-            .withBase(URI.create(extension.getUri()), computePath(extension));
+        Configuration.Builder builder = Configuration.builder().baseUri(URI.create(extension.getUri())).basePath(computePath(extension));
 
         builder = addArtifacts(extension, builder);
         builder = addArtifactFolders(extension, builder);
@@ -40,6 +39,8 @@ public class GenerateConfigurationFileTask extends DefaultTask
         PrintWriter printer = new PrintWriter(outstream);
         writeExtra(printer);
         config.write(printer);
+        printer.flush();
+        outstream.flush();
         outstream.close();
         }
 
@@ -71,7 +72,7 @@ public class GenerateConfigurationFileTask extends DefaultTask
             Path relative_path = base_path.relativize(artifact_path);
             if (spec.getPath() != null)
                 relative_path = Paths.get(spec.getPath());
-            builder = builder.library(Library.Reference.at(artifact_file.getAbsolutePath()).path(relative_path).classpath(spec.isClasspath()).modulepath(spec.isModulepath()).build());
+            builder = builder.file(FileMetadata.readFrom(artifact_file.getAbsolutePath()).path(relative_path).classpath(spec.isClasspath()).modulepath(spec.isModulepath()));
             }
         return builder;
         }
@@ -108,7 +109,7 @@ public class GenerateConfigurationFileTask extends DefaultTask
                 if (spec.getPath() != null)
                     relative_path = Paths.get(spec.getPath() + artifact_file.getName());
                 //debug(String.format("relative_path=%s\n", relative_path));
-                builder = builder.library(Library.Reference.at(artifact_file.getAbsolutePath()).path(relative_path).classpath(spec.isClasspath()).modulepath(spec.isModulepath()).build());
+                builder = builder.file(FileMetadata.readFrom(artifact_file.getAbsolutePath()).path(relative_path).classpath(spec.isClasspath()).modulepath(spec.isModulepath()));
                 }
             }
         return builder;

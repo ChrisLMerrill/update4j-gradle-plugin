@@ -114,7 +114,7 @@ public class Tests
         createGradleFile(false, false, true);
         Assert.assertTrue(runBuild());
         String xml = getOutputFile();
-        Assert.assertEquals(6, StringUtils.countMatches(xml, "<library path=\"install/MyApp/lib"));  // find the right number?
+        Assert.assertEquals(6, StringUtils.countMatches(xml, "<file path=\"install/MyApp/lib"));  // find the right number?
         Assert.assertTrue(xml.contains("path=\"install/MyApp/lib/MyApp.jar")); // verify one
         }
 
@@ -125,7 +125,7 @@ public class Tests
         createGradleFile(false, false, true);
         Assert.assertTrue(runBuild());
         String xml = getOutputFile();
-        Assert.assertEquals(6, StringUtils.countMatches(xml, "<library path=\"lib"));  // find the right number?
+        Assert.assertEquals(6, StringUtils.countMatches(xml, "<file path=\"lib"));  // find the right number?
         Assert.assertTrue(xml.contains("path=\"lib/MyApp.jar")); // verify one
         }
 
@@ -136,7 +136,7 @@ public class Tests
         createGradleFile(false, false, true);
         Assert.assertTrue(runBuild());
         String xml = getOutputFile();
-        Assert.assertEquals(6, StringUtils.countMatches(xml, "<library path=\"mypath/"));  // find the right number?
+        Assert.assertEquals(6, StringUtils.countMatches(xml, "<file path=\"mypath/"));  // find the right number?
         Assert.assertTrue(xml.contains("path=\"mypath/MyApp.jar")); // verify one
         }
 
@@ -166,10 +166,9 @@ public class Tests
 
     private boolean runBuild()
         {
-        _result = null;
         try
             {
-            _result = GradleRunner.create()
+            BuildResult result = GradleRunner.create()
                 .withProjectDir(_project)
                 .withArguments("build", "installDist", "createUpdate4jConfig")
                 .withPluginClasspath()
@@ -283,7 +282,6 @@ public class Tests
 
     private File _project;
     private String _artifacts = null;
-    private BuildResult _result;
 
     private String _path = null;
     }
