@@ -15,7 +15,6 @@ update4j {
     uri = 'https://myserver.com/path-to-my-update-files/'
     path = '${user.dir}'
     output = 'update4j/update.xml'
-//    folder = 'name=install/example|path=/'
     file = 'name=install/example/lib/example-1.0.jar|path=/lib/example-1.0.jar|classpath'
     folder = 'name=install/example/bin|path=/bin/'
 }

@@ -34,7 +34,7 @@ public class FolderSpec
 
     public static FolderSpec parse(String descriptor)
         {
-        FolderSpec artifact = new FolderSpec();
+        FolderSpec folder = new FolderSpec();
 
         StringTokenizer tokenizer = new StringTokenizer(descriptor, "|");
         while (tokenizer.hasMoreTokens())
@@ -43,23 +43,23 @@ public class FolderSpec
             switch (params.nextToken())
                 {
                 case "name":
-                    artifact._name = params.nextToken();
+                    folder._name = params.nextToken();
                     break;
                 case "base":
-                    artifact._base = params.nextToken();
+                    folder._base = params.nextToken();
                     break;
                 case "path":
-                    artifact._path = params.nextToken();
+                    folder._path = params.nextToken();
                     break;
                 case "classpath":
-                    artifact._classpath = true;
+                    folder._classpath = true;
                     break;
                 case "modulepath":
-                    artifact._modulepath = true;
+                    folder._modulepath = true;
                     break;
                 }
             }
-        return artifact;
+        return folder;
         }
 
     private String _name;

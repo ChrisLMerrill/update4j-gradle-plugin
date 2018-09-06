@@ -29,7 +29,7 @@ public class FileSpec
 
     public static FileSpec parse(String descriptor)
         {
-        FileSpec artifact = new FileSpec();
+        FileSpec file = new FileSpec();
 
         StringTokenizer tokenizer = new StringTokenizer(descriptor, "|");
         while (tokenizer.hasMoreTokens())
@@ -38,20 +38,20 @@ public class FileSpec
             switch (params.nextToken())
                 {
                 case "name":
-                    artifact._name = params.nextToken();
+                    file._name = params.nextToken();
                     break;
                 case "path":
-                    artifact._path = params.nextToken();
+                    file._path = params.nextToken();
                     break;
                 case "classpath":
-                    artifact._classpath = true;
+                    file._classpath = true;
                     break;
                 case "modulepath":
-                    artifact._modulepath = true;
+                    file._modulepath = true;
                     break;
                 }
             }
-        return artifact;
+        return file;
         }
 
     private String _name;

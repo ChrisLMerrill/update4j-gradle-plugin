@@ -45,9 +45,9 @@ public class Tests
         }
 
     @Test
-    public void fileArtifacts() throws IOException
+    public void files() throws IOException
         {
-        addBasicFileArtifacts();
+        addBasicFiles();
         createGradleFile(false, false, true);
         Assert.assertTrue(runBuild());
         String xml = getOutputFile();
@@ -57,7 +57,7 @@ public class Tests
         }
 
     @Test
-    public void fileArtifactWithClasspath() throws IOException
+    public void fileWithClasspath() throws IOException
         {
         _files = "    file 'name=install/MyApp/lib/MyApp.jar|path=override/file.jar|classpath'\n";
         createGradleFile(false, false, true);
@@ -67,7 +67,7 @@ public class Tests
         }
 
     @Test
-    public void fileArtifactWithModulepath() throws IOException
+    public void fileWithModulepath() throws IOException
         {
         _files = "    file 'name=install/MyApp/lib/MyApp.jar|path=override/file.jar|modulepath'\n";
         createGradleFile(false, false, true);
@@ -77,7 +77,7 @@ public class Tests
         }
 
     @Test
-    public void fileArtifactAbsolute() throws IOException
+    public void fileAbsolute() throws IOException
         {
         _files = "    file 'name=" + new File(_project,"build/libs/MyApp.jar").getAbsolutePath().replace("\\", "\\\\") + "|path=absolute/MyApp.jar'\n";
         createGradleFile(false, false, true);
@@ -87,9 +87,9 @@ public class Tests
         }
 
     @Test
-    public void fileArtifactsRelative() throws IOException
+    public void filesRelative() throws IOException
         {
-        addFileArtifactsWithDefaultBasePath();
+        addFilesWithDefaultBasePath();
         createGradleFile(false, false, true);
         Assert.assertTrue(runBuild());
         String xml = getOutputFile();
@@ -98,9 +98,9 @@ public class Tests
         }
 
     @Test
-    public void fileArtifactsWithPathOverride() throws IOException
+    public void fileWithPathOverride() throws IOException
         {
-        addFileArtifactWithPathOverride();
+        addFileWithPathOverride();
         createGradleFile(false, false, true);
         Assert.assertTrue(runBuild());
         String xml = getOutputFile();
@@ -110,7 +110,7 @@ public class Tests
     @Test
     public void allFilesInFolder() throws IOException
         {
-        addAllArtifactsInFolder();
+        addFolder();
         createGradleFile(false, false, true);
         Assert.assertTrue(runBuild());
         String xml = getOutputFile();
@@ -121,7 +121,7 @@ public class Tests
     @Test
     public void allFilesInFolderWithBaseOverride() throws IOException
         {
-        addAllArtifactsInFolderWithBaseOverride();
+        addFolderWithBaseOverride();
         createGradleFile(false, false, true);
         Assert.assertTrue(runBuild());
         String xml = getOutputFile();
@@ -132,7 +132,7 @@ public class Tests
     @Test
     public void allFilesInFolderWithBaseOverrideAndPath() throws IOException
         {
-        addAllArtifactsInFolderWithBaseOverrideAndPath();
+        addFolderWithBaseOverrideAndPath();
         createGradleFile(false, false, true);
         Assert.assertTrue(runBuild());
         String xml = getOutputFile();
@@ -144,7 +144,7 @@ public class Tests
     public void userDirPath() throws IOException
         {
         _path = "'${user.dir}'";
-        addBasicFileArtifacts();
+        addBasicFiles();
         createGradleFile(false, false, true);
         Assert.assertTrue(runBuild());
         String xml = getOutputFile();
@@ -156,7 +156,7 @@ public class Tests
     public void userHomePath() throws IOException
         {
         _path = "'${user.home}'";
-        addBasicFileArtifacts();
+        addBasicFiles();
         createGradleFile(false, false, true);
         Assert.assertTrue(runBuild());
         String xml = getOutputFile();
@@ -234,20 +234,20 @@ public class Tests
         outstream.close();
         }
 
-    private void addBasicFileArtifacts()
+    private void addBasicFiles()
         {
         _files =
             "    file 'name=install/MyApp/lib/MyApp.jar'\n" +
             "    file 'name=install/MyApp/lib/guava-23.0.jar'\n";
         }
 
-    private void addFileArtifactWithPathOverride()
+    private void addFileWithPathOverride()
         {
         _files =
             "    file 'name=install/MyApp/lib/guava-23.0.jar|path=override/file.jar'\n";
         }
 
-    private void addFileArtifactsWithDefaultBasePath()
+    private void addFilesWithDefaultBasePath()
         {
         _files =
             "    defaultFolder 'install/MyApp/'\n" +
@@ -255,19 +255,19 @@ public class Tests
             "    file 'name=lib/guava-23.0.jar'\n";             // this one will resolve under the specified base path
         }
 
-    private void addAllArtifactsInFolder()
+    private void addFolder()
         {
         _files =
             "    folder 'name=install/MyApp/lib'\n";
         }
 
-    private void addAllArtifactsInFolderWithBaseOverride()
+    private void addFolderWithBaseOverride()
         {
         _files =
             "    folder 'name=install/MyApp/lib|base=install/MyApp'\n";
         }
 
-    private void addAllArtifactsInFolderWithBaseOverrideAndPath()
+    private void addFolderWithBaseOverrideAndPath()
         {
         _files =
             "    folder 'name=install/MyApp/lib|base=install/MyApp/lib|path=mypath/'\n";
