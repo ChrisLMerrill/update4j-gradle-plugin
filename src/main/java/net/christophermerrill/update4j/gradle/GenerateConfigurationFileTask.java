@@ -74,7 +74,7 @@ public class GenerateConfigurationFileTask extends DefaultTask
             Path relative_path = base_path.relativize(artifact_path);
             if (spec.getPath() != null)
                 relative_path = Paths.get(spec.getPath());
-            builder = builder.file(FileMetadata.readFrom(file.getAbsolutePath()).path(relative_path).classpath(spec.isClasspath()).modulepath(spec.isModulepath()));
+            builder = builder.file(FileMetadata.readFrom(file.getAbsolutePath()).path(relative_path).classpath(spec.isClasspath()).modulepath(spec.isModulepath()).ignoreBootConflict(spec.isIgnoreBootConflict()));
             }
         return builder;
         }
@@ -111,7 +111,7 @@ public class GenerateConfigurationFileTask extends DefaultTask
                 if (spec.getPath() != null)
                     relative_path = Paths.get(spec.getPath() + artifact_file.getName());
                 //debug(String.format("relative_path=%s\n", relative_path));
-                builder = builder.file(FileMetadata.readFrom(artifact_file.getAbsolutePath()).path(relative_path).classpath(spec.isClasspath()).modulepath(spec.isModulepath()));
+                builder = builder.file(FileMetadata.readFrom(artifact_file.getAbsolutePath()).path(relative_path).classpath(spec.isClasspath()).modulepath(spec.isModulepath()).ignoreBootConflict(spec.isIgnoreBootConflict()));
                 }
             }
         return builder;

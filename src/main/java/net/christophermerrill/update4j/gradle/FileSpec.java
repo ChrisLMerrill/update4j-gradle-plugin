@@ -27,6 +27,11 @@ public class FileSpec
         return _modulepath;
         }
 
+    public boolean isIgnoreBootConflict()
+        {
+        return _ignore;
+        }
+
     public static FileSpec parse(String descriptor)
         {
         FileSpec file = new FileSpec();
@@ -49,6 +54,9 @@ public class FileSpec
                 case "modulepath":
                     file._modulepath = true;
                     break;
+                case "ignorebootconflict":
+                    file._ignore = true;
+                    break;
                 }
             }
         return file;
@@ -58,4 +66,5 @@ public class FileSpec
     private String _path;
     private boolean _classpath = false;
     private boolean _modulepath = false;
+    private boolean _ignore = false;
     }

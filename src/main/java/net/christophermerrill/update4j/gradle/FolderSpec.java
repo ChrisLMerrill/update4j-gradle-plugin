@@ -32,6 +32,11 @@ public class FolderSpec
         return _modulepath;
         }
 
+    public boolean isIgnoreBootConflict()
+        {
+        return _ignore;
+        }
+
     public static FolderSpec parse(String descriptor)
         {
         FolderSpec folder = new FolderSpec();
@@ -57,6 +62,9 @@ public class FolderSpec
                 case "modulepath":
                     folder._modulepath = true;
                     break;
+                case "ignorebootconflict":
+                    folder._ignore = true;
+                    break;
                 }
             }
         return folder;
@@ -67,6 +75,5 @@ public class FolderSpec
     private String _path;
     private boolean _classpath = false;
     private boolean _modulepath = false;
+    private boolean _ignore = false;
     }
-
-
