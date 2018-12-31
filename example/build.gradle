@@ -1,3 +1,7 @@
+//
+// Example build script using the plugin
+//
+
 plugins {
     id 'java'
     id 'application'
