@@ -44,14 +44,6 @@ public class GenerateConfigurationFileTask extends DefaultTask
         outstream.close();
         }
 
-    private Path computePath(Update4jGradleExtension extension)
-        {
-        String path = extension.getPath();
-        path = path.replace("${user.dir}", System.getProperty("user.dir"));
-        path = path.replace("${user.home}", System.getProperty("user.home"));
-        return Paths.get(path);
-        }
-
     private Configuration.Builder addFiles(Update4jGradleExtension extension, Configuration.Builder builder)
         {
         File build_dir = getProject().getBuildDir();
