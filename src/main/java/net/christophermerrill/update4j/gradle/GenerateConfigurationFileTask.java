@@ -26,7 +26,7 @@ public class GenerateConfigurationFileTask extends DefaultTask
         if (path == null)
             throw new IllegalStateException("The 'path' property must be provided in a 'update4j' block. This property must specify the base path of the files to update (in the installation).");
 
-        Configuration.Builder builder = Configuration.builder().baseUri(URI.create(extension.getUri())).basePath(computePath(extension));
+        Configuration.Builder builder = Configuration.builder().baseUri(URI.create(extension.getUri())).basePath(path);
 
         builder = addFiles(extension, builder);
         builder = addFolders(extension, builder);
