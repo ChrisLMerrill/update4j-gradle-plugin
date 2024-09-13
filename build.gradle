@@ -1,17 +1,8 @@
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'org.unbroken-dome.gradle-plugins:gradle-testsets-plugin:1.5.1'
-    }
-}
-
 plugins {
     id 'java'
     id 'maven-publish'
     id 'java-gradle-plugin'
-    id 'org.unbroken-dome.test-sets' version '1.4.5'
+    id 'org.unbroken-dome.test-sets' version '1.5.1'
 }
 
 group 'net.christophermerrill'
@@ -19,7 +10,6 @@ version '0.3'
 
 repositories {
     mavenLocal()
-    jcenter()
     mavenCentral()
 }
 
